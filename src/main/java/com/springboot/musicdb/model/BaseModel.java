@@ -2,6 +2,7 @@ package com.springboot.musicdb.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,19 +12,24 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@MappedSuperclass  
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+@MappedSuperclass
 public class BaseModel {
 
-	@Id	
-	@GeneratedValue
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	protected Long id;
-	
-	
-	/*@Temporal(TemporalType.TIMESTAMP)
-	private Date created;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModified;*/
+
+	@Temporal(TemporalType.DATE)
+	@CreatedDate
+	private Date created = new Date();
+
+	@Temporal(TemporalType.DATE)
+	@LastModifiedDate
+	private Date lastModified;
 
 	public BaseModel() {
 		super();
@@ -37,43 +43,21 @@ public class BaseModel {
 		this.id = id;
 	}
 
-	/*public Date getCreated() {
-		return created;
+	public Date getCreated() {
+		return this.created;
 	}
 
-	@PrePersist
-	public void setCreated() {
-		this.created = new Date();
+	public void setCreated(Date created) {
+		this.created = (this.created == null) ? new Date() : created;
 	}
 
 	public Date getLastModified() {
-		return lastModified;
+		return this.lastModified;
+
 	}
 
-	@PreUpdate  
-	public void setLastModified() {
-		this.lastModified = new Date();
-	}*/
-
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (getClass() != object.getClass())
-			return false;
-
-		BaseModel other = (BaseModel) object;
-		if (this.getId() != other.getId() && (this.getId() == null || !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return this.getClass().getName() + " [ID=" + id + "]";
+	public void setLastModified(Date lastModified) {
+		this.lastModified = (this.lastModified == null) ? new Date() : lastModified;
 	}
 
 }

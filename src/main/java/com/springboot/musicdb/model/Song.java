@@ -1,34 +1,20 @@
 package com.springboot.musicdb.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Song implements Serializable {
+public class Song extends BaseModel {
 
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private Integer track;
 	private String name;
 
-	/*@ManyToOne
-	private Album album;*/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Album album;
 
 	public Integer getTrack() {
 		return track;
@@ -45,9 +31,9 @@ public class Song implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/*public Album getAlbum() {
+
+	public Album getAlbum() {
 		return album;
-	}*/
+	}
 
 }

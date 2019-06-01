@@ -1,36 +1,26 @@
 package com.springboot.musicdb.model;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Artist  {
-
-	
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Artist extends BaseModel {
 
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	/*
+	 * @ManyToMany(fetch = FetchType.LAZY) private List<Album> albums;
+	 */
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "artist_albums", joinColumns = { @JoinColumn(name = "artist_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "albums_id") })
 	private List<Album> albums;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

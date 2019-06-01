@@ -1,46 +1,32 @@
 package com.springboot.musicdb.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Album  {
-
-	
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Album extends BaseModel{
 
 	private String name;
 
 	@Column(name = "year_released")
 	private Integer released;
 
-	@ManyToMany(mappedBy = "albums")
+	@ManyToMany(mappedBy = "albums", fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<Artist> artist;
 
-	/*@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "album_id")
-	private List<Song> song = new ArrayList<>();*/
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	private List<Song> song = new ArrayList<>();
 
 	public String getName() {
 		return name;
@@ -62,8 +48,8 @@ public class Album  {
 		return artist;
 	}
 
-/*	public List<Song> getSong() {
+	public List<Song> getSong() {
 		return song;
 	}
-*/
+
 }
