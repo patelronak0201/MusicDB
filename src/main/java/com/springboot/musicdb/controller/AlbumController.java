@@ -1,9 +1,8 @@
-package com.springboot.musicdb.resource;
+package com.springboot.musicdb.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.musicdb.model.Album;
-import com.springboot.musicdb.model.Artist;
 import com.springboot.musicdb.service.AlbumService;
 
 @RestController
-
-public class AlbumResource {
+public class AlbumController {
 
 	@Autowired
 	private AlbumService albumService;
@@ -28,29 +25,24 @@ public class AlbumResource {
 		return albumService.getAllAlbums();
 	}
 
-	@GetMapping("/albums/{name}")
-	public Album findByName(@PathVariable final String name) {
-		return albumService.findByName(name);
+	@GetMapping("/albums/{id}")
+	public Album findById(@PathVariable long id) {
+		return albumService.findById(id);
 	}
 
-	@PostMapping("/albums/add")
-	public Album addArtist(@RequestBody Album album) {
-		return albumService.addAlbum(album);
+	@PostMapping("/albums")
+	public Album createArtist(@RequestBody Album album) {
+		return albumService.createAlbum(album);
 	}
 
-	@PutMapping("/albums/{id}")
-	public ResponseEntity<Object> updateArtist(@RequestBody Album album, @PathVariable long id) {
-		return albumService.updateAlbum(album, id);
+	@PutMapping("/artists/{artistId}/albums/{albumId}")
+	public Album updateAlbumByArtist(@RequestBody Album album, @PathVariable long artistId,
+			@PathVariable long albumId) {
+		return albumService.updateAlbum(album, artistId, albumId);
 	}
 
 	@DeleteMapping("/albums/{id}")
 	public void deleteAlbum(@PathVariable long id) {
 		albumService.deleteAlbum(id);
-	}
-
-	////
-	@GetMapping("/albums/getAllArtistForAlbum/{name}")
-	public List<Artist> getAllArtistForAlbum(@PathVariable final String name) {
-		return albumService.getAllArtistForAlbum(name);
 	}
 }

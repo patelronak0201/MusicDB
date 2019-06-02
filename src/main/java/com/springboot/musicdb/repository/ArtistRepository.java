@@ -9,4 +9,5 @@ import com.springboot.musicdb.model.Artist;
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
 	Artist findByName(String name);
+	
 }

@@ -1,4 +1,4 @@
-package com.springboot.musicdb.resource;
+package com.springboot.musicdb.controller;
 
 import java.util.List;
 
@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.musicdb.model.Album;
 import com.springboot.musicdb.model.Song;
 import com.springboot.musicdb.service.SongService;
 
 @RestController
 
-public class SongResource {
+public class SongController {
 
 	@Autowired
 	private SongService songService;
@@ -27,19 +28,20 @@ public class SongResource {
 		return songService.getAllSong();
 	}
 
-	@GetMapping("/songs/{name}")
-	public Song findByName(@PathVariable final String name) {
-		return songService.findByName(name);
+	@GetMapping("/songs/{id}")
+	public Song findById(@PathVariable long id) {
+		return songService.findById(id);
 	}
 
-	@PostMapping("/song/add")
-	public Song addArtist(@RequestBody Song song) {
-		return songService.addSong(song);
+	@PostMapping("/songs")
+	public Song createArtist(@RequestBody Song song) {
+		return songService.createSong(song);
 	}
 
-	@PutMapping("/songs/{id}")
-	public ResponseEntity<Object> updateArtist(@RequestBody Song song, @PathVariable long id) {
-		return songService.updateSong(song, id);
+	@PutMapping("/albums/{albumId}/songs/{songId}")
+	public Song updateArtist(@RequestBody Song song, @PathVariable long albumId,
+			@PathVariable long songId) {
+		return songService.updateSong(song, albumId,songId);
 	}
 
 	@DeleteMapping("/songs/{id}")

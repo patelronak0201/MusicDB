@@ -2,6 +2,7 @@ package com.springboot.musicdb.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,8 @@ public class Song extends BaseModel {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "album_id")
+
 	@JsonIgnore
 	private Album album;
 
@@ -34,6 +37,10 @@ public class Song extends BaseModel {
 
 	public Album getAlbum() {
 		return album;
+	}
+
+	public void setAlbum(Album album) {
+		this.album = album;
 	}
 
 }

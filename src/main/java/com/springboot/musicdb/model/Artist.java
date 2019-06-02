@@ -1,14 +1,18 @@
 package com.springboot.musicdb.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties(value = { "albums"})
 public class Artist extends BaseModel {
 
 	private String name;
@@ -17,10 +21,11 @@ public class Artist extends BaseModel {
 	 * @ManyToMany(fetch = FetchType.LAZY) private List<Album> albums;
 	 */
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "artist_albums", joinColumns = { @JoinColumn(name = "artist_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "albums_id") })
-	private List<Album> albums;
+			@JoinColumn(name = "albums_id")})
+	
+	private List<Album> albums=new ArrayList();
 
 	public String getName() {
 		return name;

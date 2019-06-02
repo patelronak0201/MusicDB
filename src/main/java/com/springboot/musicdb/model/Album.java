@@ -3,29 +3,29 @@ package com.springboot.musicdb.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-public class Album extends BaseModel{
+public class Album extends BaseModel {
 
 	private String name;
 
 	@Column(name = "year_released")
 	private Integer released;
 
-	@ManyToMany(mappedBy = "albums", fetch = FetchType.LAZY)
-	@JsonIgnore
-	private List<Artist> artist;
+	@ManyToOne
+	@JoinTable(name = "artist_albums", joinColumns = { @JoinColumn(name = "albums_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "artist_id") })
+	private Artist artist;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "album_id")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "album")	
 	private List<Song> song = new ArrayList<>();
 
 	public String getName() {
@@ -44,12 +44,16 @@ public class Album extends BaseModel{
 		this.released = released;
 	}
 
-	public List<Artist> getArtist() {
+	public List<Song> getSong() {
+		return song;
+	}
+
+	public Artist getArtist() {
 		return artist;
 	}
 
-	public List<Song> getSong() {
-		return song;
+	public void setArtist(Artist artist) {
+		this.artist = artist;
 	}
 
 }
