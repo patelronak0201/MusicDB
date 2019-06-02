@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springboot.musicdb.exception.ResourceNotFoundException;
@@ -30,13 +31,16 @@ public class SongService {
 				.orElseThrow(() -> new ResourceNotFoundException("SongId " + id + " not found"));
 	}
 
-	public Song createSong(Song song) {
-		songRepository.save(song);
-		return songRepository.findByName(song.getName());
+	public Song createSongForAlbum(Song song, long albumId) {
+		Optional<Album> album = albumRepository.findById(albumId);
+		if (!album.isPresent()) {
+			throw new ResourceNotFoundException("AlbumId " + album + " not found");
+		}
+		song.setAlbum(album.get());
+		return songRepository.save(song);
 	}
 
 	public Song updateSong(Song songRequest, long albumId, long songId) {
-
 		Optional<Album> album = albumRepository.findById(albumId);
 		if (!album.isPresent()) {
 			throw new ResourceNotFoundException("AlbumId " + album + " not found");
@@ -50,8 +54,11 @@ public class SongService {
 		}).orElseThrow(() -> new ResourceNotFoundException("SongId " + songId + "not found"));
 	}
 
-	public void deleteSong(long id) {
-		songRepository.deleteById(id);
+	public ResponseEntity<?> deleteSong(long id) {
+		return songRepository.findById(id).map(song -> {
+			songRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}).orElseThrow(() -> new ResourceNotFoundException("SongId " + id + " not found"));
 	}
 
 }

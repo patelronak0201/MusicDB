@@ -1,9 +1,9 @@
 package com.springboot.musicdb.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springboot.musicdb.exception.ResourceNotFoundException;
@@ -23,12 +23,10 @@ public class ArtistService {
 	public Artist findById(long id) {
 		return artistRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("ArtistId " + id + " not found"));
-
 	}
 
 	public Artist createArtist(Artist artist) {
-		artistRepository.save(artist);
-		return artistRepository.findByName(artist.getName());
+		return artistRepository.save(artist);
 	}
 
 	public Artist updateArtist(Artist artist, long id) {
@@ -38,8 +36,11 @@ public class ArtistService {
 		}).orElseThrow(() -> new ResourceNotFoundException("ArtistId " + id + " not found"));
 	}
 
-	public void deleteArtist(long id) {
-		artistRepository.deleteById(id);
+	public ResponseEntity<?> deleteArtist(long id) {
+		return artistRepository.findById(id).map(artist -> {
+			artistRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}).orElseThrow(() -> new ResourceNotFoundException("ArtistId " + id + " not found"));
 	}
 
 }

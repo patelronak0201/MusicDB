@@ -7,6 +7,4 @@ import com.springboot.musicdb.model.Song;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
-
-	Song findByName(String name);
 }

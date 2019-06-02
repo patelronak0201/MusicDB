@@ -3,6 +3,7 @@ package com.springboot.musicdb.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ public class AlbumController {
 	private AlbumService albumService;
 
 	@GetMapping("/albums")
-	public List<Album> getAllArtists() {
+	public List<Album> getAllAlbums() {
 		return albumService.getAllAlbums();
 	}
 
@@ -29,10 +30,11 @@ public class AlbumController {
 	public Album findById(@PathVariable long id) {
 		return albumService.findById(id);
 	}
+	
 
-	@PostMapping("/albums")
-	public Album createArtist(@RequestBody Album album) {
-		return albumService.createAlbum(album);
+	@PostMapping("/artists/{artistId}/albums")
+	public Album createAlbumByArtist(@RequestBody Album album, @PathVariable long artistId) {
+		return albumService.createAlbumByArtist(album, artistId);
 	}
 
 	@PutMapping("/artists/{artistId}/albums/{albumId}")
@@ -42,7 +44,7 @@ public class AlbumController {
 	}
 
 	@DeleteMapping("/albums/{id}")
-	public void deleteAlbum(@PathVariable long id) {
-		albumService.deleteAlbum(id);
+	public ResponseEntity<?> deleteAlbum(@PathVariable long id) {
+		return albumService.deleteAlbum(id);
 	}
 }

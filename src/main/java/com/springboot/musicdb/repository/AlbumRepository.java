@@ -8,5 +8,4 @@ import com.springboot.musicdb.model.Album;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
-	Album findByName(String name);
 }

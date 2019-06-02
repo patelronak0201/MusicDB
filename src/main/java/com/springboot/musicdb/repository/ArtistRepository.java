@@ -6,8 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.springboot.musicdb.model.Artist;
 
 @Repository
-public interface ArtistRepository extends JpaRepository<Artist, Long> {
-
-	Artist findByName(String name);
-	
+public interface ArtistRepository extends JpaRepository<Artist, Long> {	
 }

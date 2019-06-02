@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.musicdb.model.Album;
 import com.springboot.musicdb.model.Song;
 import com.springboot.musicdb.service.SongService;
 
 @RestController
-
 public class SongController {
 
 	@Autowired
@@ -33,26 +31,18 @@ public class SongController {
 		return songService.findById(id);
 	}
 
-	@PostMapping("/songs")
-	public Song createArtist(@RequestBody Song song) {
-		return songService.createSong(song);
+	@PostMapping("/albums/{albumId}/songs")
+	public Song createArtist(@RequestBody Song song, @PathVariable long albumId) {
+		return songService.createSongForAlbum(song, albumId);
 	}
 
 	@PutMapping("/albums/{albumId}/songs/{songId}")
-	public Song updateArtist(@RequestBody Song song, @PathVariable long albumId,
-			@PathVariable long songId) {
-		return songService.updateSong(song, albumId,songId);
+	public Song updateArtist(@RequestBody Song song, @PathVariable long albumId, @PathVariable long songId) {
+		return songService.updateSong(song, albumId, songId);
 	}
 
 	@DeleteMapping("/songs/{id}")
-	public void deleteAlbum(@PathVariable long id) {
-		songService.deleteSong(id);
+	public ResponseEntity<?> deleteAlbum(@PathVariable long id) {
+		return songService.deleteSong(id);
 	}
-
-	////
-	/*
-	 * @GetMapping("/albums/getAllArtistForAlbum/{name}") public List<Artist>
-	 * getAllArtistForAlbum(@PathVariable final String name) { return
-	 * albumService.getAllArtistForAlbum(name); }
-	 */
 }
