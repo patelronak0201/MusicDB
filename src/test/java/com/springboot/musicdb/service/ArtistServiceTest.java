@@ -1,10 +1,13 @@
 package com.springboot.musicdb.service;
 
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -14,9 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.springboot.musicdb.entity.Artist;
+import com.springboot.musicdb.exception.ResourceNotFoundException;
 import com.springboot.musicdb.repository.ArtistRepository;
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,20 +31,50 @@ public class ArtistServiceTest {
 	@MockBean
 	private ArtistRepository artistRepository;
 
-	@Test
-	public void getAllArtistsTest() {
-		List<Artist> artists = new ArrayList();
-		Artist artist = new Artist();
+	private Artist artist;
+
+	@Before
+	public void setUp() throws Exception {
+		artist = new Artist();
 		artist.setId(Long.valueOf(1));
-		artist.setName("Time");
-		artists.add(artist);
-		
-		Mockito.when(artistRepository.findAll()).thenReturn(artists);
-		//assertThat(artistService.getAllArtists()).iseq
-		
-		//artistService.getAllArtists();
-		//assertEquals(1, resultList.size());
+		artist.setName("Tim");
 	}
 
-	
+	@Test
+	public void testGetAllArtists() {
+		List<Artist> artists = new ArrayList();
+		artists.add(artist);
+		Mockito.when(artistRepository.findAll()).thenReturn(artists);
+
+		List<Artist> resultList = artistService.getAllArtists();
+		assertEquals(1, resultList.size());
+		assertNotNull(resultList.get(0));
+		assertEquals("Tim", resultList.get(0).getName());
+
+	}
+
+	@Test
+	public void testFindByIds() {
+		List<Artist> artists = new ArrayList();
+		artists.add(artist);
+		Mockito.when(artistRepository.findById(Long.valueOf(1))).thenReturn(Optional.of(artist));
+		
+		Artist resultArtist = artistService.findById(Long.valueOf(1));		
+		assertNotNull(resultArtist);
+		assertEquals("Tim", resultArtist.getName());
+	}
+
+	@Test(expected = ResourceNotFoundException.class)
+	public void testFindByIdsThrowsExceptionTest() {
+		artistService.findById(Long.valueOf(2));
+	}
+
+	@Test
+	public void testSaveArtist() {
+		Mockito.when(artistRepository.save(artist)).thenReturn(artist);
+		Artist resultArtist = artistService.createArtist(artist);
+		assertNotNull(resultArtist);
+		assertEquals(Long.valueOf(1), resultArtist.getId());
+	}
+
 }
