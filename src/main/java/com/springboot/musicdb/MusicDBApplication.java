@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication 
 @EnableJpaAuditing
-public class SpringBoot2RestServiceBasicApplication {
+public class MusicDBApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBoot2RestServiceBasicApplication.class, args);
+		SpringApplication.run(MusicDBApplication.class, args);
 	}
 }

@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.springboot.musicdb.entity.Album;
+import com.springboot.musicdb.entity.Artist;
 import com.springboot.musicdb.exception.ResourceNotFoundException;
-import com.springboot.musicdb.model.Album;
-import com.springboot.musicdb.model.Artist;
 import com.springboot.musicdb.repository.AlbumRepository;
 import com.springboot.musicdb.repository.ArtistRepository;
 
@@ -22,13 +22,16 @@ public class AlbumService {
 	@Autowired
 	private ArtistRepository artistRespository;
 
-	public List<Album> getAllAlbums() {
-		return albumRespository.findAll();
+	public List<Album> findAllAlbumsByArtistId(long artistId) {
+		return albumRespository.findByArtistId(artistId);
 	}
 
-	public Album findById(long id) {
-		return albumRespository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("AlbumId " + id + " not found"));
+	public List<Album> findAlbumByArtistId(long albumId, long artistId) {
+		Optional<List<Album>> albums = albumRespository.findByIdAndArtistId(albumId, artistId);
+		if (!albums.isPresent()) {
+			throw new ResourceNotFoundException("AlbumId " + albumId + " not found");
+		}
+		return albums.get();
 	}
 
 	public Album createAlbum(Album album) {
@@ -58,10 +61,10 @@ public class AlbumService {
 		}).orElseThrow(() -> new ResourceNotFoundException("AlbumId " + albumId + "not found"));
 	}
 
-	public ResponseEntity<?> deleteAlbum(long id) {
-		return albumRespository.findById(id).map(album -> {
-			albumRespository.deleteById(id);
+	public ResponseEntity<?> deleteAlbum(long artistId, long albumId) {
+		return albumRespository.findByIdAndArtistId(albumId, artistId).map(album -> {
+			albumRespository.deleteById(albumId);
 			return ResponseEntity.ok().build();
-		}).orElseThrow(() -> new ResourceNotFoundException("AlbumId " + id + " not found"));
+		}).orElseThrow(() -> new ResourceNotFoundException("AlbumId " + albumId + " not found"));
 	}
 }

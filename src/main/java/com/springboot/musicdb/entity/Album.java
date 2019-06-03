@@ -1,4 +1,4 @@
-package com.springboot.musicdb.model;
+package com.springboot.musicdb.entity;
 
 import java.util.ArrayList;
 import java.util.List;

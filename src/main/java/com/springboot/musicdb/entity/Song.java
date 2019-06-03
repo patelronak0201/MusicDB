@@ -1,4 +1,4 @@
-package com.springboot.musicdb.model;
+package com.springboot.musicdb.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
