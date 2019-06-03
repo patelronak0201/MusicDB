@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.musicdb.entity.Album;
+import com.springboot.musicdb.model.Album;
 import com.springboot.musicdb.service.AlbumService;
 
 @RestController

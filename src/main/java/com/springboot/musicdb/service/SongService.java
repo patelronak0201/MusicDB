@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.springboot.musicdb.entity.Album;
-import com.springboot.musicdb.entity.Song;
 import com.springboot.musicdb.exception.ResourceNotFoundException;
+import com.springboot.musicdb.model.Album;
+import com.springboot.musicdb.model.Song;
 import com.springboot.musicdb.repository.AlbumRepository;
 import com.springboot.musicdb.repository.SongRepository;
 

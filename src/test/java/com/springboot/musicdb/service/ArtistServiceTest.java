@@ -16,8 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.springboot.musicdb.entity.Artist;
 import com.springboot.musicdb.exception.ResourceNotFoundException;
+import com.springboot.musicdb.model.Artist;
 import com.springboot.musicdb.repository.ArtistRepository;
 
 @RunWith(SpringRunner.class)
