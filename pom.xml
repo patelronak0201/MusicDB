@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.5.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath /> 
 	</parent>
-	<groupId>com.in28minutes.springboot.rest.example</groupId>
-	<artifactId>spring-boot-2-rest-service-basic</artifactId>
+	<groupId>com.springboot.app</groupId>
+	<artifactId>musicdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-2-rest-service-basic</name>
-	<description>Demo project for Spring Boot</description>
+	<name>musicdb</name>
+	<description>musicdb application</description>
 
 	<properties>
 		<java.version>1.8</java.version>
